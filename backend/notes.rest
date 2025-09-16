@@ -1,0 +1,25 @@
+### GetAllNotes GET  /api/notes
+GET http://localhost:3000/api/notes
+
+### GetNoteById GET /api/notes/:id
+GET http://localhost:3000/api/notes/68c7c3b438e8437212fb0013
+
+### CreateNote POST /api/notes
+POST http://localhost:3000/api/notes
+Content-Type: application/json
+
+{
+  "title": "Third Note",
+  "content": "This is a third note content."
+}
+
+### UpdateNote PUT /api/notes/:id
+PUT http://localhost:3000/api/notes/68c7c35f38e8437212fb0010
+Content-Type: application/json
+
+{
+  "content": "This is the updated content of the sample note test update."
+}
+
+### DeleteNote DELETE /api/notes/:id
+DELETE http://localhost:3000/api/notes/68c7c721567fb3f1b358638b
