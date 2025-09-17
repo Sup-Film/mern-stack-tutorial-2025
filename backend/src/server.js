@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import "express-async-errors";
+
 import notesRoutes from "./routes/notesRoutes.js";
 import asyncNotesRoutes from "./routes/asyncNotesRoutes.js";
 import { connectDB } from "../config/db.js";
@@ -14,6 +16,9 @@ const PORT = process.env.PORT || 5001;
 // Load env variables
 
 // Middleware
+app.use(cors({
+  origin: "http://localhost:5173",
+}));
 app.use(express.json());
 app.use(rateLimiter); // ใช้ rateLimiter middleware
 
