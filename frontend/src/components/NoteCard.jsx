@@ -1,9 +1,33 @@
 import { PenSquareIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
+import { toast } from "react-hot-toast";
 
 import { formatDate } from "../lib/utils";
+import api from "../lib/axios.js";
 
-const NoteCard = ({ note }) => {
+const NoteCard = ({ note, setNotes }) => {
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
+
+    try {
+      await api.delete(`/notes/${id}`);
+      toast.success("Note deleted successfully");
+      // อัปเดตสถานะของโน้ตในหน้าหลัก โดยการ prev.filter คืนค่าอาเรย์ใหม่ที่ไม่มีโน้ตที่ถูกลบ โดย note._id ที่ไม่เท่ากับ id ที่ถูกลบ จะถูกเก็บไว้ในอาเรย์ใหม่
+      setNotes((prev) => prev.filter((note) => note._id !== id));
+    } catch (error) {
+      console.log("Error deleting note:", error);
+      if (error.response?.status === 429) {
+        toast.error("Too many requests. Please try again later.", {
+          duration: 5000,
+          icon: "⏳",
+        });
+      } else {
+        toast.error("Failed to delete note. Please try again.");
+      }
+    }
+  };
+
   return (
     <Link
       to={`/note/${note._id}`}
@@ -17,7 +41,9 @@ const NoteCard = ({ note }) => {
           </span>
           <div className="flex items-center gap-1">
             <PenSquareIcon className="size-4" />
-            <button className="btn btn-ghost btn-sm text-error">
+            <button
+              className="btn btn-ghost btn-sm text-error"
+              onClick={(e) => handleDelete(e, note._id)}>
               <Trash2Icon className="size-4" />
             </button>
           </div>

@@ -4,7 +4,7 @@ import Note from "../models/Notes.js";
 // อาศัย express-async-errors ให้โยน error ออกไปยัง global error handler
 
 export async function listNotes(req, res) {
-  const notes = await Note.find().sort({ createAt: -1 }); // เรียงจากใหม่ไปเก่า
+  const notes = await Note.find().sort({ createdAt: -1 }); // เรียงจากใหม่ไปเก่า
   res.status(200).json(notes);
 }
 
